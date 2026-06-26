@@ -1,5 +1,9 @@
+"use client";
+
 import { TransactionList } from "@/components/TransactionList";
 import { useMetrics } from "@/hooks/useMetrics";
+import { useState } from "react";
+import { SearchBar } from "@/components/SearchBar";
 
 const MOCK_TRANSACTIONS = [
   { id: "1", description: "Stripe payout",   amount: 1250.00, type: "credit" as const, date: "2026-06-25" },
@@ -9,12 +13,20 @@ const MOCK_TRANSACTIONS = [
 ];
 
 export default function Home() {
-  const { totalIncome, totalExpenses, netBalance, transactionCount } = useMetrics(MOCK_TRANSACTIONS);
+  const [query , setQuery] = useState("");
+
+  const filtered = MOCK_TRANSACTIONS.filter(transaction => 
+    transaction.description.toLowerCase().includes(query.toLowerCase())
+  );
+  
+  const { totalIncome, totalExpenses, netBalance, transactionCount } = useMetrics(filtered);
+
 
   return (
     <main className="min-h-screen flex items-center justify-center p-8">
       <div className="w-full max-w-sm flex flex-col gap-4">
-        <TransactionList transactions={MOCK_TRANSACTIONS} />
+        <SearchBar onSearch={setQuery} />
+        <TransactionList transactions={filtered} />
 
         <div className="text-sm text-muted-foreground space-y-1">
           <p>Income: ${totalIncome?.toFixed(2)}</p>
