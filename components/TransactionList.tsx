@@ -10,9 +10,10 @@ type Transaction = {
 
 type Props = {
     transactions: Transaction[];
+    showDate?: boolean;
 };
 
-export function TransactionList({ transactions }: Props) {
+export function TransactionList({ transactions, showDate = false }: Props) {
     const zeroAmountTransactions = transactions.filter(
         transaction => transaction.amount > 0
     );
@@ -30,20 +31,21 @@ export function TransactionList({ transactions }: Props) {
             </CardHeader>
             <CardContent className="px-6 pb-6 pt-0">
                 <ul>
-                    {zeroAmountTransactions.map(transaction => (
-                        <li key={transaction.id} className="flex justify-between items-center py-3 border-b border-border last:border-0">
+                    {zeroAmountTransactions.map(({ id, description, amount, type, date }) => (
+                        <li key={id} className="flex justify-between items-center py-3 border-b border-border last:border-0">
                             <div className="flex items-center gap-2 min-w-0">
-                                <span className="text-sm truncate">{transaction.description}</span>
+                                <span className="text-sm truncate">{description}</span>
                                 <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                                    transaction.type === 'credit'
+                                    type === 'credit'
                                         ? 'bg-green-500/10 text-green-500'
                                         : 'bg-red-500/10 text-red-500'
                                 }`}>
-                                    {transaction.type}
+                                    {type}
                                 </span>
+                                {showDate && <span className="text-xs text-muted-foreground">{date}</span>}
                             </div>
-                            <span className={`text-sm font-mono shrink-0 w-24 text-right ${transaction.type === 'credit' ? 'text-green-500' : 'text-red-500'}`}>
-                                {transaction.type === 'debit' ? '-' : '+'}${transaction.amount.toFixed(2)}
+                            <span className={`text-sm font-mono shrink-0 w-24 text-right ${type === 'credit' ? 'text-green-500' : 'text-red-500'}`}>
+                                {type === 'debit' ? '-' : '+'}${amount.toFixed(2)}
                             </span>
                         </li>
                     ))}
