@@ -6,8 +6,17 @@ type Transaction = {
   date: string;
 };
 
+/**
+ * A typed fetcher wrapper that centralises HTTP concerns
+ * 
+ * @param url 
+ * @returns 
+ */
+
 export async function fetcher<T>(url: string): Promise<T> {
-  /* ??? */
+  const res = await fetch( url );
+  if( !res.ok ) throw new Error(`HTTP error: ${res.status}`)
+  return res.json() as Promise<T>;
 }
 
-export const getTransactions = () => /* ??? */;
+export const getTransactions = () => fetcher<Transaction[]>('/api/transactions');
