@@ -1,9 +1,9 @@
 "use client";
 
-import { TransactionList } from "@/components/TransactionList";
+import { TransactionList, SearchBar, Sidebar } from "@/components/index"
 import { useMetrics } from "@/hooks/useMetrics";
 import { useState } from "react";
-import { SearchBar } from "@/components/SearchBar";
+
 
 const MOCK_TRANSACTIONS = [
   { id: "1", description: "Stripe payout",   amount: 1250.00, type: "credit" as const, date: "2026-06-25" },
