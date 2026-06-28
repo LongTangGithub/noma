@@ -1,10 +1,4 @@
-type Transaction = {
-  id: string;
-  amount: number;
-  type: "credit" | "debit";
-  description: string;
-  date: string;
-};
+import type { Transaction } from "@/types";
 
 class TransactionSummary {
   constructor(private transactions: Transaction[]) {}
